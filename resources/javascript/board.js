@@ -24,10 +24,29 @@ export class Board {
         }
     }
     
+    checkRows() {
+        for (let row = 0; row < this.shapes.length; ++row) {
+            let column = 0;
+            while (column < this.shapes[row].length && this.shapes[row][column] !== this.bg_color) {
+                ++column;
+            }
+            
+            if (column == this.shapes[row].length) {
+                console.log(this.shapes);
+                this.shapes.splice(row, 1);
+                console.log(this.shapes);
+                this.shapes.unshift(Array(this.columns).fill(this.bg_color));
+                console.log(this.shapes);
+            }
+        }
+    }
+    
     placePiece(piece) {
         for (let i = 0; i < piece.shape.length; ++i) {
             this.shapes[piece.startRow + piece.shape[i][1]][piece.startColumn + piece.shape[i][0]] = piece.color;
         }
+        
+        this.checkRows();
     }
     
     collides(column, row) {

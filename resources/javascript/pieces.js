@@ -11,7 +11,6 @@ class Piece {
             ++i;
         }
         
-
         if (i < this.shape.length) {
             throw new Error("Game over");
         } else {
@@ -74,13 +73,23 @@ export class Bar extends Piece {
     }
     
     rotate() {
+        let new_shape = [];
+
         if (this.vertical) {
-            this.shape = [[0, 0], [1, 0], [2, 0], [3, 0]]
+            new_shape = [[0, 0], [1, 0], [2, 0], [3, 0]]
         } else {
-            this.shape = [[0, 0], [0, 1], [0, 2], [0, 3]]
+            new_shape = [[0, 0], [0, 1], [0, 2], [0, 3]]
         }
         
         this.vertical = !this.vertical;
+        
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
 
         this.board.drawPiece(this);
     }
@@ -101,24 +110,33 @@ export class T extends Piece {
     }
     
     rotate() {
+        let new_shape = [];
         switch (this.state) {
             case 0:
-                this.shape = [[0, 0], [0, 1], [1, 1], [0, 2]];
+                new_shape = [[0, 0], [0, 1], [1, 1], [0, 2]];
 
                 break;
             case 1:
-                this.shape = [[0, 0], [1, 1], [1, 0], [2, 0]];
+                new_shape = [[0, 0], [1, 1], [1, 0], [2, 0]];
 
                 break;
             case 2:
-                this.shape = [[1, 0], [0, 1], [1, 1], [1, 2]];
+                new_shape = [[1, 0], [0, 1], [1, 1], [1, 2]];
 
                 break;
             case 3:
-                this.shape = [[1, 0], [0, 1], [1, 1], [2, 1]];
+                new_shape = [[1, 0], [0, 1], [1, 1], [2, 1]];
 
                 break;
         }
+
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
         
         this.state = (this.state + 1) % 4;
 
@@ -134,11 +152,21 @@ export class Z extends Piece {
     }
         
     rotate() {
+        let new_shape = [];
+
         if (this.vertical) {
-            this.shape = [[0, 0], [1, 0], [1, 1], [2, 1]];
+            new_shape = [[0, 0], [1, 0], [1, 1], [2, 1]];
         } else {
-            this.shape = [[1, 0], [1, 1], [0, 1], [0, 2]];
+            new_shape = [[1, 0], [1, 1], [0, 1], [0, 2]];
         }
+
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
 
         this.vertical = !this.vertical;
 
@@ -154,24 +182,34 @@ export class L extends Piece {
     }
     
     rotate() {
+        let new_shape = [];
+
         switch (this.state) {
             case 0:
-                this.shape = [[1, 0], [1, 1], [1, 2], [0, 2]];
+                new_shape = [[1, 0], [1, 1], [1, 2], [0, 2]];
 
                 break;
             case 1:
-                this.shape = [[0, 0], [0, 1], [1, 1], [2, 1]];
+                new_shape = [[0, 0], [0, 1], [1, 1], [2, 1]];
 
                 break;
             case 2:
-                this.shape = [[0, 0], [0, 1], [0, 2], [1, 0]];
+                new_shape = [[0, 0], [0, 1], [0, 2], [1, 0]];
 
                 break;
             case 3:
-                this.shape = [[0, 0], [1, 0], [2, 0], [2, 1]];
+                new_shape = [[0, 0], [1, 0], [2, 0], [2, 1]];
 
                 break;
         }
+
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
         
         this.state = (this.state + 1) % 4;
 
@@ -179,12 +217,12 @@ export class L extends Piece {
     }
 }
 
-export function pieceFactory(board) {
+export function pieceFactory(board, column) {
     switch (Math.floor(Math.random() * 5)) {
-        case 0: return new Bar(board, 0, 0);
-        case 1: return new Square(board, 0, 0);
-        case 2: return new T(board, 0, 0);        
-        case 3: return new Z(board, 0, 0);        
-        case 4: return new L(board, 0, 0);        
+        case 0: return new Bar(board, column, 0);
+        case 1: return new Square(board, column, 0);
+        case 2: return new T(board, column, 0);        
+        case 3: return new Z(board, column, 0);        
+        case 4: return new L(board, column, 0);        
     }
 }

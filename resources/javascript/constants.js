@@ -1,0 +1,17 @@
+const MOVEMENT = {
+    LEFT: "ArrowLeft",
+    RIGHT: "ArrowRight",
+    DOWN: "ArrowDown",
+    ROTATE: "ArrowUp"
+}
+
+const BOARD_SIZE = {
+    COLUMNS: 11,
+    ROWS: 16
+}
+
+const INITIAL_INTERVAL_TIME = 1000;
+const INTERVAL_TIME_LIMIT = 200;
+const INTERVAL_STEP = 100;
+
+export {MOVEMENT, BOARD_SIZE, INITIAL_INTERVAL_TIME, INTERVAL_TIME_LIMIT, INTERVAL_STEP};

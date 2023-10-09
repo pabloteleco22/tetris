@@ -174,6 +174,36 @@ export class Z extends Piece {
     }
 }
 
+export class Zi extends Piece {
+    constructor(board, startColumn, startRow) {
+        super(board, startColumn, startRow, "#51b2df",
+            [[0, 1], [1, 1], [1, 0], [2, 0]]);
+        this.vertical = false;
+    }
+        
+    rotate() {
+        let new_shape = [];
+
+        if (this.vertical) {
+            new_shape = [[0, 1], [1, 1], [1, 0], [2, 0]];
+        } else {
+            new_shape = [[0, 0], [0, 1], [1, 1], [1, 2]];
+        }
+
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
+
+        this.vertical = !this.vertical;
+
+        this.board.drawPiece(this);
+    }
+}
+
 export class L extends Piece {
     constructor(board, startColumn, startRow) {
         super(board, startColumn, startRow, "#df51df",
@@ -217,12 +247,58 @@ export class L extends Piece {
     }
 }
 
+export class Li extends Piece {
+    constructor(board, startColumn, startRow) {
+        super(board, startColumn, startRow, "#db8c31",
+            [[0, 0], [1, 0], [2, 0], [0, 1]]);
+        this.state = 0;
+    }
+    
+    rotate() {
+        let new_shape = [];
+
+        switch (this.state) {
+            case 0:
+                new_shape = [[0, 0], [1, 0], [1, 1], [1, 2]];
+
+                break;
+            case 1:
+                new_shape = [[0, 1], [1, 1], [2, 1], [2, 0]];
+
+                break;
+            case 2:
+                new_shape = [[0, 0], [0, 1], [0, 2], [1, 2]];
+
+                break;
+            case 3:
+                new_shape = [[0, 0], [1, 0], [2, 0], [0, 1]];
+
+                break;
+        }
+
+        for (let i = 0; i < new_shape.length; ++i) {
+            if (this.board.collides(this.startColumn + new_shape[i][0], this.startRow + new_shape[i][1])) {
+                return;
+            }
+        }
+        
+        this.shape = new_shape;
+        
+        this.state = (this.state + 1) % 4;
+
+        this.board.drawPiece(this);
+    }
+}
+
+
 export function pieceFactory(board, column) {
-    switch (Math.floor(Math.random() * 5)) {
+    switch (Math.floor(Math.random() * 7)) {
         case 0: return new Bar(board, column, 0);
         case 1: return new Square(board, column, 0);
         case 2: return new T(board, column, 0);        
         case 3: return new Z(board, column, 0);        
         case 4: return new L(board, column, 0);        
+        case 5: return new Zi(board, column, 0);
+        case 6: return new Li(board, column, 0);
     }
 }

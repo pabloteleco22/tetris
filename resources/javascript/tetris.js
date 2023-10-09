@@ -1,22 +1,42 @@
 import {Board} from "./board.js";
+import {MOVEMENT, BOARD_SIZE, INITIAL_INTERVAL_TIME,
+    INTERVAL_TIME_LIMIT, INTERVAL_STEP} from "./constants.js";
 import * as piece from "./pieces.js";
 
-const COLUMNS = 11;
-const ROWS = 16;
+const MIDDLE_COLUMN = Math.floor(BOARD_SIZE.COLUMNS / 2);
 
-const MIDDLE_COLUMN = Math.floor(COLUMNS / 2);
-
-let board = new Board(document.getElementById("board"), COLUMNS, ROWS, "#ffffff");
+let board = new Board(
+    document.getElementById("board"),
+    document.getElementById("score"),
+    BOARD_SIZE.COLUMNS,
+    BOARD_SIZE.ROWS,
+    "#ffffff");
 
 let currentPiece = piece.pieceFactory(board, MIDDLE_COLUMN);
+
+let intervalTime = INITIAL_INTERVAL_TIME;
+
+let interval = setInterval(movePieceDown, intervalTime);
 
 function movePieceDown() {
     if (!currentPiece.moveDown()) {
         try {
             currentPiece = piece.pieceFactory(board, MIDDLE_COLUMN);
+            if (intervalTime - INTERVAL_STEP >= INTERVAL_TIME_LIMIT) {
+                intervalTime -= INTERVAL_STEP;
+            }
+            clearInterval(interval);
+            interval = setInterval(movePieceDown, intervalTime);
         } catch (e) {
+            clearInterval(interval);
             window.alert(e.message);
-            board = new Board(document.getElementById("board"), COLUMNS, ROWS, "#ffffff");
+            intervalTime = INITIAL_INTERVAL_TIME;
+            interval = setInterval(movePieceDown, intervalTime);
+            board = new Board(
+                document.getElementById("board"),
+                document.getElementById("score"),
+                BOARD_SIZE.COLUMNS, BOARD_SIZE.ROWS,
+                "#ffffff");
             currentPiece = piece.pieceFactory(board, MIDDLE_COLUMN);
         }
     }
@@ -24,23 +44,21 @@ function movePieceDown() {
 
 document.addEventListener("keydown", event => {
     switch (event.key) {
-        case "ArrowDown":
+        case MOVEMENT.DOWN:
             movePieceDown();
 
             break;
-        case "ArrowLeft":
+        case MOVEMENT.LEFT:
             currentPiece.moveLeft();
 
             break;
-        case "ArrowRight":
+        case MOVEMENT.RIGHT:
             currentPiece.moveRight();
 
             break;
-        case "ArrowUp":
+        case MOVEMENT.ROTATE:
             currentPiece.rotate();
 
             break;
     }
 });
-
-setInterval(movePieceDown, 1000);

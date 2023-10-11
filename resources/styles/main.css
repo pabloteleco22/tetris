@@ -1,6 +1,21 @@
-div {
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#start-game {
+    color: white;
+    background-color: black;
+    width: 100vw;
+    height: 50vh;
+    text-align: center;
+    padding-top: 50vh;
+}
+
+#game {
     width: fit-content;
     margin: auto;
+    display: none;
 }
 
 #board {

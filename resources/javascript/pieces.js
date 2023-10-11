@@ -12,7 +12,7 @@ class Piece {
         }
         
         if (i < this.shape.length) {
-            throw new Error("Game over");
+            throw new Error("Fin del juego");
         } else {
             this.board.drawPiece(this);
         }

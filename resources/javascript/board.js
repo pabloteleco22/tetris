@@ -12,7 +12,7 @@ export class Board {
         this.bg_color = bg_color;
         this.shapes = Array.from(Array(rows), _ => Array(columns).fill(bg_color));
         this.score = 0;
-        this.gold_score = 100;
+        this.gold_score = 300;
         this.gold_condition = () => {return this.score >= this.gold_score};
         this.gold_color = "#ffd000";
     }

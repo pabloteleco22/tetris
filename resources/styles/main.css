@@ -1,0 +1,13 @@
+div {
+    width: fit-content;
+    margin: auto;
+}
+
+#board {
+    height: 80vh;
+    border:1px solid #000000;
+}
+
+#score-label {
+    display: block;
+}
